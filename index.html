@@ -1,0 +1,685 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="color-scheme" content="dark light">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Reza H. Mogavi</title>
+<meta name="description" content="Reza H. Mogavi. Human-Centred AI and Compathy researcher. CIFAR AI Safety Postdoctoral Fellow, University of Toronto.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' fill='%231B1C1B'/%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='Georgia,serif' font-size='44' fill='%23ECEAE4'%3ER%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400&family=Zen+Kaku+Gothic+New:wght@400;500&display=swap">
+<style>
+  :root {
+    --paper: #1B1C1B;
+    --ink: #ECEAE4;
+    --ink-2: #A6A49E;
+    --ink-3: #75746F;
+    --rule: #303130;
+    --ai: #9CC2D6;
+    --mincho: "Shippori Mincho", "Hiragino Mincho ProN", "Yu Mincho", "Noto Serif JP", Georgia, serif;
+    --gothic: "Zen Kaku Gothic New", "Hiragino Sans", "Yu Gothic", "Noto Sans JP", system-ui, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #1B1C1B;
+      --ink: #ECEAE4;
+      --ink-2: #A6A49E;
+      --ink-3: #75746F;
+      --rule: #303130;
+      --ai: #9CC2D6;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #1B1C1B;
+    --ink: #ECEAE4;
+    --ink-2: #A6A49E;
+    --ink-3: #75746F;
+    --rule: #303130;
+    --ai: #9CC2D6;
+  }
+
+  /* Reader-selected light palette (the "Light" control in the masthead). */
+  html.light, html.light[data-theme] {
+    --paper: #FFFFFF;
+    --ink: #141414;
+    --ink-2: #5F5F5C;
+    --ink-3: #8A8A88;
+    --rule: #E4E4E1;
+    --ai: #1F5C7A;
+  }
+  body, .section, .colophon { transition: background-color .3s ease, color .3s ease, border-color .3s ease; }
+  @media (prefers-reduced-motion: reduce) { body, .section, .colophon { transition: none; } }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--gothic);
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 1.75;
+    -webkit-font-smoothing: antialiased;
+  }
+  ::selection { background: var(--ink); color: var(--paper); }
+
+  a { color: inherit; text-decoration: none; }
+  a:focus-visible { outline: 1px solid var(--ai); outline-offset: 4px; }
+  p a, dd a, li a {
+    text-decoration: underline;
+    text-decoration-thickness: 1px;
+    text-decoration-color: var(--ink-3);
+    text-underline-offset: .2em;
+  }
+  p a:hover, dd a:hover, li a:hover { color: var(--ai); text-decoration-color: var(--ai); }
+  p { margin: 0 0 1.25em; text-wrap: pretty; }
+
+  .skip { position: absolute; left: -999px; top: 0; padding: .5rem 1rem; background: var(--ink); color: var(--paper); }
+  .skip:focus { left: 1rem; top: 1rem; z-index: 5; }
+
+  /* Page column: set toward the left, with a wide outer margin. */
+  .page {
+    width: 100%;
+    max-width: 76rem;
+    margin-inline: auto;
+    padding-inline: clamp(1.25rem, 6vw, 5rem);
+  }
+
+  .masthead {
+    display: flex; justify-content: space-between; align-items: baseline; gap: 1.5rem; flex-wrap: wrap;
+    padding-block: 2rem 0;
+    font-size: .95rem;
+  }
+  .masthead .name { font-family: var(--mincho); font-size: 1.05rem; }
+  .masthead nav { display: flex; gap: 1.5rem; flex-wrap: wrap; color: var(--ink-2); }
+  .masthead nav a:hover { color: var(--ai); }
+  .theme {
+    font: inherit; font-size: .85rem; color: var(--ink); background: none;
+    border: 1px solid var(--ink-3); border-radius: 999px;
+    padding: .15rem .75rem .15rem .55rem; margin-left: .75rem;
+    display: inline-flex; align-items: center; gap: .45rem;
+    cursor: pointer; line-height: 1.6;
+    transition: border-color .2s ease, color .2s ease;
+  }
+  .theme svg { width: .95em; height: .95em; flex: none; }
+  .theme:hover { color: var(--ai); border-color: var(--ai); }
+  .theme:focus-visible { outline: 1px solid var(--ai); outline-offset: 4px; }
+
+  /* Single committed look: sumi charcoal in every theme state. */
+  /* Opening: one quiet screen, the statement set low and left. */
+  .opening {
+    min-height: calc(100svh - 6rem);
+    display: grid;
+    align-content: end;
+    gap: clamp(3rem, 8vh, 6rem);
+    padding-block: clamp(4rem, 10vh, 8rem) clamp(3rem, 8vh, 6rem);
+  }
+  h1 {
+    font-family: var(--mincho);
+    font-weight: 400;
+    font-size: clamp(2.5rem, 6.2vw, 4.75rem);
+    line-height: 1.12;
+    letter-spacing: -.012em;
+    margin: 0 0 clamp(1.5rem, 4vh, 2.5rem);
+  }
+  /* Chiasmus: the word "for" is held on one axis, so the two nouns visibly trade places. */
+  .chiasmus {
+    font-family: var(--mincho);
+    font-size: clamp(1.3rem, 2.6vw, 2rem);
+    line-height: 1.5;
+    margin: 0;
+    display: grid;
+    grid-template-columns: auto auto auto;
+    justify-content: start;
+    column-gap: .4em;
+  }
+  .chiasmus .l { text-align: right; }
+  .chiasmus .f { color: var(--ink-3); }
+  .chiasmus .r { text-align: left; }
+  .chiasmus [data-w] { transition: color .35s ease; }
+  .chiasmus .lit { color: var(--ai); }
+  .byline {
+    font-size: .9rem; line-height: 1.6; color: var(--ink-2); margin: 0;
+  }
+
+  .pillars { margin: 0 0 1.25rem; }
+  .pillars dt { font-family: var(--mincho); font-size: 1.08rem; display: inline; }
+  .pillars dt::after { content: ". "; }
+  .pillars dd { display: inline; margin: 0; }
+  .pillars div { margin-bottom: .9rem; }
+
+  .portrait { margin: 0; }
+  .portrait .frame {
+    aspect-ratio: 1; max-width: 100%;
+    border-radius: 50%;
+    overflow: hidden;
+  }
+  .portrait img { display: block; width: 100%; height: 100%; object-fit: cover; }
+  .portrait figcaption { margin-top: .75rem; font-size: .85rem; line-height: 1.55; color: var(--ink-2); }
+
+  /* Sections: heading in the margin, text in the column. */
+  .section {
+    display: grid;
+    grid-template-columns: 8.5rem minmax(0, 36rem);
+    gap: 1rem clamp(1.5rem, 4vw, 3rem);
+    padding-block: clamp(2.5rem, 5vw, 4rem);
+  }
+  .section + .section { border-top: 1px solid var(--rule); }
+  .section.about { grid-template-columns: 8.5rem minmax(0, 36rem) 11rem; border-top: 1px solid var(--rule); }
+  .section.about .portrait { justify-self: end; width: 100%; }
+  .section h2 {
+    font-family: var(--mincho);
+    font-weight: 400;
+    font-size: 1rem;
+    line-height: 1.6;
+    color: var(--ink-2);
+    margin: 0;
+    padding-top: .1rem;
+  }
+  .section h3 {
+    font-family: var(--mincho);
+    font-weight: 400;
+    font-size: 1.2rem;
+    line-height: 1.4;
+    margin: 2.75rem 0 1.1rem;
+  }
+  .text > :first-child, .text h3:first-child { margin-top: 0; }
+  .bio-lead {
+    font-family: var(--mincho);
+    font-size: 1.35rem;
+    line-height: 1.45;
+    margin-bottom: 1.5rem;
+    text-wrap: balance;
+  }
+
+  .questions { margin: 0 0 1.5rem; padding: 0; list-style: none; }
+  .questions li { display: grid; grid-template-columns: 3rem 1fr; gap: .5rem; margin-bottom: .9rem; }
+  .questions .n { font-family: var(--mincho); color: var(--ink-3); }
+
+  /* Publications */
+  .pubs { list-style: none; margin: 0; padding: 0; }
+  .pub { display: grid; grid-template-columns: 3.25rem minmax(0, 1fr); gap: .75rem; margin-bottom: 1.5rem; }
+  .pub .y { color: var(--ink-3); font-size: .9rem; padding-top: .2rem; font-variant-numeric: tabular-nums; }
+  .pub .t { font-family: var(--mincho); font-size: 1.05rem; line-height: 1.45; margin: 0 0 .25rem; }
+  .pub .t a { text-decoration: none; }
+  .pub .t a:hover { color: var(--ai); }
+  .pub .m { font-size: .9rem; line-height: 1.6; color: var(--ink-2); margin: 0; }
+  .pub .m b { font-weight: 500; color: var(--ink); }
+  .pub .m i { font-style: italic; }
+  .pub .m .prize { color: var(--ink); }
+
+  /* Simple two-part lists: courses, service, recognition */
+  .list { list-style: none; margin: 0; padding: 0; }
+  .list li { display: grid; grid-template-columns: 7rem minmax(0, 1fr); gap: .75rem; margin-bottom: .45rem; }
+  .list .k { color: var(--ink-3); font-size: .9rem; padding-top: .15rem; font-variant-numeric: tabular-nums; }
+  .list .v { margin: 0; }
+  .list .v span { color: var(--ink-2); }
+
+  .contact { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 1rem 2.5rem; }
+  .contact a {
+    display: inline-flex; align-items: center; gap: .6rem;
+    color: var(--ink); text-decoration: none; padding-block: .2rem;
+    border-bottom: 1px solid transparent; transition: color .2s ease, border-color .2s ease;
+  }
+  .contact a:hover { color: var(--ai); border-color: var(--ai); }
+  .contact svg { width: 1.15rem; height: 1.15rem; flex: none; stroke: currentColor; fill: none; stroke-width: 1.4; stroke-linecap: round; stroke-linejoin: round; }
+
+  /* Return to top: appears once the opening screen has scrolled away. */
+  .totop {
+    position: fixed;
+    right: clamp(1rem, 3vw, 2rem);
+    bottom: calc(clamp(1rem, 3vw, 2rem) + env(safe-area-inset-bottom, 0px));
+    width: 2.6rem; height: 2.6rem;
+    display: grid; place-items: center;
+    background: var(--paper); color: var(--ink);
+    border: 1px solid var(--ink-3); border-radius: 50%;
+    cursor: pointer; padding: 0;
+    opacity: 0; visibility: hidden; transform: translateY(.4rem);
+    transition: opacity .25s ease, transform .25s ease, visibility 0s linear .25s, border-color .2s ease, color .2s ease;
+    z-index: 10;
+  }
+  .totop.show { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
+  .totop svg { width: 1rem; height: 1rem; stroke: currentColor; fill: none; stroke-width: 1.5; stroke-linecap: round; stroke-linejoin: round; }
+  .totop:hover { color: var(--ai); border-color: var(--ai); }
+  .totop:focus-visible { outline: 1px solid var(--ai); outline-offset: 4px; }
+  @media (prefers-reduced-motion: reduce) { .totop { transition: none; } }
+
+  .colophon {
+    padding-block: 3rem 3.5rem;
+    border-top: 1px solid var(--rule);
+    font-family: var(--mincho);
+    font-size: .9rem;
+    color: var(--ink-2);
+    display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+  }
+
+  @media (max-width: 720px) {
+    .opening { min-height: calc(100svh - 5rem); }
+    .section.about { grid-template-columns: 1fr; }
+    .section.about .portrait { justify-self: start; max-width: 10rem; order: 1; margin-block: .5rem 1rem; }
+    .section.about .text { order: 2; }
+    .section { grid-template-columns: 1fr; gap: .5rem; }
+    .section h2 { margin-bottom: .5rem; }
+    .list li { grid-template-columns: 1fr; gap: 0; margin-bottom: .8rem; }
+    .contact { flex-direction: column; gap: .6rem; }
+    .pub { grid-template-columns: 2.75rem minmax(0, 1fr); }
+  }
+</style>
+</head>
+<body>
+
+
+<script>
+  try { if (localStorage.getItem('theme') === 'light') document.documentElement.classList.add('light'); } catch (e) {}
+</script>
+
+<a class="skip" href="#main">Skip to content</a>
+
+<div class="page">
+
+  <header class="masthead" id="top">
+    <a class="name" href="#top">Reza H. Mogavi</a>
+    <nav aria-label="Sections">
+      <a href="#about">About</a>
+      <a href="#publications">Publications</a>
+      <a href="#teaching">Teaching</a>
+      <a href="#service">Service</a>
+      <a href="#recognition">Recognition</a>
+      <a href="#contact">Contact</a>
+      <button class="theme" id="theme-toggle" type="button" aria-pressed="false" aria-label="Switch to light background">
+        <svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="8.5" fill="none" stroke="currentColor" stroke-width="1.4"/><path d="M10 1.5 A8.5 8.5 0 0 1 10 18.5 Z" fill="currentColor"/></svg>
+        <span id="theme-label">Light</span>
+      </button>
+    </nav>
+  </header>
+
+  <main id="main">
+
+    <section class="opening" aria-label="Introduction">
+      <div class="statement">
+        <h1>Human-Centred AI<br>and Compathy.</h1>
+        <p class="chiasmus" aria-label="Computation for Empathy. Empathy for Computation.">
+          <span class="l" data-w="c">Computation</span><span class="f">for</span><span class="r" data-w="e">Empathy.</span>
+          <span class="l" data-w="e">Empathy</span><span class="f">for</span><span class="r" data-w="c">Computation.</span>
+        </p>
+      </div>
+      <p class="byline">Reza H. Mogavi<br>CIFAR AI Safety Postdoctoral Fellow, University of Toronto</p>
+    </section>
+
+    <section class="section about" id="about">
+      <h2>About</h2>
+      <div class="text">
+        <p class="bio-lead">I am a CIFAR AI Safety Postdoctoral Fellow at the University of Toronto, where I study compathy: computation and empathy, taken together.</p>
+        <p>I am affiliated with the Department of Psychology's <a href="https://michaelinzlicht.com/lab/people">Work and Play Lab</a> and the <a href="https://srinstitute.utoronto.ca/who-we-are">Schwartz Reisman Institute for Technology and Society</a>. I received my Ph.D. in Computer Science and Engineering from the Hong Kong University of Science and Technology, and have since held research positions at the University of Waterloo, McMaster University, and the University of Toronto.</p>
+
+        <h3>Two questions</h3>
+        <ol class="questions">
+          <li><span class="n">RQ1</span><span>How could empathy inform the design of better computational tools and models?</span></li>
+          <li><span class="n">RQ2</span><span>How could technology impact, and ideally reinforce, humans' capacity for positive empathy, without losing sight of moral reasoning?</span></li>
+        </ol>
+
+        <h3>Three pillars</h3>
+        <p>Compathy is the thread that runs through everything I do; these three pillars are how I follow it, each bringing computation and empathy a step closer to one another.</p>
+        <dl class="pillars">
+          <div><dt>Responsible AI</dt><dd>Embedding fairness, transparency, and accountability into how intelligent systems learn and decide.</dd></div>
+          <div><dt>Human-centred design</dt><dd>Treating people as active contributors, so that human goals, values, and context shape computational intelligence.</dd></div>
+          <div><dt>Human experience</dt><dd>Understanding trust, comprehension, and reliance on AI through real, repeated, everyday interaction.</dd></div>
+        </dl>
+        <p>Compathy sits where human-computer interaction meets computational intelligence, and its questions cut across computer science, engineering, psychology, philosophy, and medicine, so the work is collaborative by necessity. Across all of it, the aim is to close the growing gap between people and the intelligent systems that increasingly shape their lives.</p>
+      </div>
+      <figure class="portrait">
+        <div class="frame">
+          <img src="portrait.png" alt="Reza H. Mogavi" width="640" height="640">
+        </div>
+      </figure>
+    </section>
+
+    <section class="section" id="publications">
+      <h2>Publications</h2>
+      <div class="text">
+        <h3>Journal articles</h3>
+        <ol class="pubs">
+          <li class="pub"><span class="y">2026</span><div>
+            <p class="t"><a href="https://doi.org/10.31234/osf.io/9vt5b_v3">Voice can help and hurt AI empathy: How context shapes the effects of vocal delivery</a></p>
+            <p class="m">Wenger, J. D., Cameron, D., <b>Mogavi, R. H.</b>, &amp; Inzlicht, M. <i>Technology, Mind, and Behavior</i>, in press.</p>
+          </div></li>
+          <li class="pub"><span class="y">2026</span><div>
+            <p class="t"><a href="https://arxiv.org/abs/2608.00313">Theory, experience, and instinct: A glimpse into AAA game processes and how UX leaders navigate pre-production</a></p>
+            <p class="m">Randelshofer, I., Tu, J., Cao, Y., <b>Mogavi, R. H.</b>, Mäkelä, V., &amp; Nacke, L. E. <i>Proceedings of the ACM on Human-Computer Interaction</i>, CHI PLAY, to appear. Preprint on arXiv.</p>
+          </div></li>
+          <li class="pub"><span class="y">2025</span><div>
+            <p class="t"><a href="https://doi.org/10.1080/10447318.2025.2549073">Who is responsible when AI fails? Mapping causes, entities, and consequences of AI privacy and ethical incidents</a></p>
+            <p class="m">Hadan, H., <b>Mogavi, R. H.</b>, Zhang-Kennedy, L., &amp; Nacke, L. E. <i>International Journal of Human–Computer Interaction</i>.</p>
+          </div></li>
+          <li class="pub"><span class="y">2025</span><div>
+            <p class="t"><a href="https://doi.org/10.1145/3711087">The Jade Gateway to trust: Exploring how socio-cultural perspectives shape trust within Chinese NFT communities</a></p>
+            <p class="m">Cao, Y.-F., <b>Mogavi, R. H.</b>, Xia, M., Lo, L. Y.-H., Zhang, X., Lou, M.-J., Nacke, L. E., Wang, Y., &amp; Qu, H. <i>Proceedings of the ACM on Human-Computer Interaction</i>, 9(CSCW1).</p>
+          </div></li>
+          <li class="pub"><span class="y">2025</span><div>
+            <p class="t"><a href="https://doi.org/10.1016/j.actpsy.2025.105418">The role and scope of gamification in education: A scientometric literature review</a></p>
+            <p class="m">Gini, F., Bassanelli, S., Bonetti, F., <b>Mogavi, R. H.</b>, Bucchiarone, A., &amp; Marconi, A. <i>Acta Psychologica</i>, 259, 105418.</p>
+          </div></li>
+          <li class="pub"><span class="y">2024</span><div>
+            <p class="t"><a href="https://doi.org/10.1016/j.chbah.2024.100095">The great AI witch hunt: Reviewers' perception and (mis)conception of generative AI in research writing</a></p>
+            <p class="m">Hadan, H., Wang, D. M., <b>Mogavi, R. H.</b>, Tu, J., Zhang-Kennedy, L., &amp; Nacke, L. E. <i>Computers in Human Behavior: Artificial Humans</i>, 2(2), 100095.</p>
+          </div></li>
+          <li class="pub"><span class="y">2024</span><div>
+            <p class="t"><a href="https://doi.org/10.1145/3677106">The Jade Gateway to exergaming: How socio-cultural factors shape exergaming among East Asian older adults</a></p>
+            <p class="m"><b>Mogavi, R. H.</b>, Son, J., Yang, S., Wang, D. M., Choong, L., Alhilal, A., Zhou, P. Y., Hui, P., &amp; Nacke, L. E. <i>Proceedings of the ACM on Human-Computer Interaction</i>, 8(CHI PLAY), 1–34. <span class="prize">Best Paper Honorable Mention.</span></p>
+          </div></li>
+          <li class="pub"><span class="y">2024</span><div>
+            <p class="t"><a href="https://doi.org/10.1016/j.chbah.2023.100027">ChatGPT in education: A blessing or a curse? A qualitative study exploring early adopters' utilization and perceptions</a></p>
+            <p class="m"><b>Mogavi, R. H.</b>, Deng, C., Kim, J. J., Zhou, P., Kwon, Y. D., Metwally, A. H. S., Tlili, A., Bassanelli, S., Bucchiarone, A., Gujar, S., Nacke, L. E., &amp; Hui, P. <i>Computers in Human Behavior: Artificial Humans</i>, 2(1), 100027.</p>
+          </div></li>
+          <li class="pub"><span class="y">2022</span><div>
+            <p class="t"><a href="https://doi.org/10.1145/3555124">What do users think of promotional gamification schemes? A qualitative case study in a question answering website</a></p>
+            <p class="m"><b>Mogavi, R. H.</b>, Zhang, Y., Haq, E.-U., Wu, Y., Hui, P., &amp; Ma, X. <i>Proceedings of the ACM on Human-Computer Interaction</i>, 6(CSCW2), 1–34. <span class="prize">Method Recognition Award.</span></p>
+          </div></li>
+          <li class="pub"><span class="y">2022</span><div>
+            <p class="t"><a href="https://doi.org/10.1145/3555553">More gamification is not always better: A case study of promotional gamification in a question answering website</a></p>
+            <p class="m"><b>Mogavi, R. H.</b>, Haq, E.-U., Gujar, S., Hui, P., &amp; Ma, X. <i>Proceedings of the ACM on Human-Computer Interaction</i>, 6(CSCW2), 1–32.</p>
+          </div></li>
+          <li class="pub"><span class="y">2021</span><div>
+            <p class="t"><a href="https://doi.org/10.1145/3449086">Characterizing student engagement moods for dropout prediction in question pool websites</a></p>
+            <p class="m"><b>Mogavi, R. H.</b>, Ma, X., &amp; Hui, P. <i>Proceedings of the ACM on Human-Computer Interaction</i>, 5(CSCW1), 1–22.</p>
+          </div></li>
+          <li class="pub"><span class="y">2013</span><div>
+            <p class="t"><a href="https://doi.org/10.1007/s11227-012-0835-1">A new high performance approach: Merging optimal multicast sessions for supporting multisource routing</a></p>
+            <p class="m">Heydarian, M., &amp; <b>Mogavi, R. H.</b> <i>The Journal of Supercomputing</i>, 63(3), 871–896.</p>
+          </div></li>
+        </ol>
+
+        <h3>Conference papers</h3>
+        <ol class="pubs">
+          <li class="pub"><span class="y">2026</span><div>
+            <p class="t"><a href="https://opus4.kobv.de/opus4-htw-saar/frontdoor/index/index/docId/1540">Informational or controlling? Understanding how badge implementation shapes performance and user experience in gamification</a></p>
+            <p class="m">Altmeyer, M., Elbitar, A., <b>Mogavi, R. H.</b>, Metwally, A. H. S., Bassanelli, S., &amp; Nacke, L. E. <i>Mensch und Computer (MuC '26)</i>, in cooperation with ACM SIGCHI.</p>
+          </div></li>
+          <li class="pub"><span class="y">2026</span><div>
+            <p class="t"><a href="https://doi.org/10.1007/978-3-032-30408-7_15">Last week with ChatGPT: A Weibo study on social perspective regarding ChatGPT for education and beyond</a></p>
+            <p class="m">Tian, Y., Tong, C., Lee, L.-H., <b>Mogavi, R. H.</b>, Liao, Y., &amp; Zhou, P. <i>HCI International 2026</i>, 262–284.</p>
+          </div></li>
+          <li class="pub"><span class="y">2026</span><div>
+            <p class="t"><a href="https://doi.org/10.1007/978-3-032-30405-6_8">Learning the ropes: Rethinking interactive training for safety-critical work</a></p>
+            <p class="m">Shanmugalingam, J., <b>Mogavi, R. H.</b>, Lario, D., &amp; Nacke, L. E. <i>HCI International 2026</i>.</p>
+          </div></li>
+          <li class="pub"><span class="y">2026</span><div>
+            <p class="t"><a href="https://doi.org/10.1145/3772363.3799318">Theory, experience, and instinct: How AAA game studio UX leaders navigate pre-production</a></p>
+            <p class="m">Randelshofer, I., Tu, J., Cao, Y.-F., <b>Mogavi, R. H.</b>, Mäkelä, V., &amp; Nacke, L. E. <i>CHI EA '26</i>, 1–7.</p>
+          </div></li>
+          <li class="pub"><span class="y">2025</span><div>
+            <p class="t"><a href="https://doi.org/10.1007/978-3-031-93567-1_8">Artificial human lecturers: Initial findings from Asia's first AI lecturers in class to promote innovation in education</a></p>
+            <p class="m">Pang, C. C., Zhao, Y., Yin, Z., Sun, J., <b>Mogavi, R. H.</b>, &amp; Hui, P. <i>HCI International 2025</i>, 105–124.</p>
+          </div></li>
+          <li class="pub"><span class="y">2025</span><div>
+            <p class="t"><a href="https://doi.org/10.1007/978-3-031-92578-8_17">Deepfake in the metaverse: An outlook survey</a></p>
+            <p class="m">Wu, H., Liao, Y., <b>Mogavi, R. H.</b>, Hui, P., &amp; Zhou, P. Y. <i>HCI International 2025</i>, 253–267.</p>
+          </div></li>
+          <li class="pub"><span class="y">2025</span><div>
+            <p class="t"><a href="https://doi.org/10.1007/978-3-031-92578-8_8">User-centered trustworthy AI metrics in the metaverse</a></p>
+            <p class="m">Zhou, P. Y., Finley, B., Lee, L.-H., <b>Mogavi, R. H.</b>, &amp; Hui, P. <i>HCI International 2025</i>, 105–120.</p>
+          </div></li>
+          <li class="pub"><span class="y">2025</span><div>
+            <p class="t"><a href="https://ieeexplore.ieee.org/document/10972885">Lie detection in social VR using multimodal data</a></p>
+            <p class="m">Cheung, C. C. S., Alhilal, A., Agrawal, K., Yin, Z., <b>Mogavi, R. H.</b>, &amp; Hui, P. <i>IEEE VR 2025</i>, 1274–1275.</p>
+          </div></li>
+          <li class="pub"><span class="y">2025</span><div>
+            <p class="t"><a href="https://doi.org/10.1145/3706598.3713937">From solo to social: Exploring the dynamics of player cooperation in a co-located cooperative exergame</a></p>
+            <p class="m">Wang, D. M., Cmentowski, S., <b>Mogavi, R. H.</b>, Senthil Nathan, K., Kukshinov, E., Tu, J., &amp; Nacke, L. E. <i>CHI '25</i>.</p>
+          </div></li>
+          <li class="pub"><span class="y">2025</span><div>
+            <p class="t"><a href="https://doi.org/10.1145/3706598.3713543">Designing biofeedback board games: The impact of heart rate on player experience</a></p>
+            <p class="m">Tu, J., Kukshinov, E., <b>Mogavi, R. H.</b>, Wang, D. M., &amp; Nacke, L. E. <i>CHI '25</i>.</p>
+          </div></li>
+          <li class="pub"><span class="y">2024</span><div>
+            <p class="t"><a href="https://doi.org/10.1007/978-3-031-60692-2_12">Making learning engaging and productive: SimLab, a VR lab to bridge between classroom theory and industrial practice in chemical engineering education</a></p>
+            <p class="m">Son, J., Alhilal, A., <b>Mogavi, R. H.</b>, Braud, T., &amp; Hui, P. <i>HCI International 2024</i>, 160–179.</p>
+          </div></li>
+          <li class="pub"><span class="y">2024</span><div>
+            <p class="t"><a href="https://doi.org/10.1007/978-3-031-60692-2_3">Long-term gamification: A survey</a></p>
+            <p class="m">Huang, L., Deng, C., Hoffman, J., <b>Mogavi, R. H.</b>, Kim, J. J., &amp; Hui, P. <i>HCI International 2024</i>, 32–43.</p>
+          </div></li>
+          <li class="pub"><span class="y">2024</span><div>
+            <p class="t"><a href="https://doi.org/10.1145/3643834.3661548">Disembodied, asocial, and unreal: How users reinterpret designed affordances of social VR</a></p>
+            <p class="m">Kukshinov, E., Harley, D., Szita, K., <b>Mogavi, R. H.</b>, MacArthur, C., &amp; Nacke, L. E. <i>DIS '24</i>, 1914–1925.</p>
+          </div></li>
+          <li class="pub"><span class="y">2024</span><div>
+            <p class="t"><a href="https://doi.org/10.1007/978-3-031-60695-3_11">Which exergame is better for older adults? An exploratory study on user perspectives of virtual reality, ExerCube, and 2D exergames</a></p>
+            <p class="m">Deng, C., Hoffman, J., <b>Mogavi, R. H.</b>, Son, J., Yang, S., &amp; Hui, P. <i>HCI in Games 2024</i>, 161–176.</p>
+          </div></li>
+          <li class="pub"><span class="y">2024</span><div>
+            <p class="t"><a href="https://doi.org/10.1145/3678884.3681897">From prompt to metaverse: User perceptions of personalized spaces crafted by generative AI</a></p>
+            <p class="m">Yang, S., Tsui, Y. H., Wang, X., Alhilal, A., <b>Mogavi, R. H.</b>, Wang, X., &amp; Hui, P. <i>CSCW Companion '24</i>, 497–504.</p>
+          </div></li>
+          <li class="pub"><span class="y">2024</span><div>
+            <p class="t"><a href="https://doi.org/10.1145/3613904.3642807">Charting the future of AI in project-based learning: A co-design exploration with students</a></p>
+            <p class="m">Zheng, C., Yuan, K., Guo, B., <b>Mogavi, R. H.</b>, Peng, Z., Ma, S., &amp; Ma, X. <i>CHI '24</i>.</p>
+          </div></li>
+          <li class="pub"><span class="y">2024</span><div>
+            <p class="t"><a href="https://doi.org/10.1145/3625007.3627595">Understanding characteristics of catalyst users in the WallStreetBets community</a></p>
+            <p class="m">Haq, E.-U., Zhu, Y., Lin, Z., Weng, H., Tyson, G., Lee, L.-H., <b>Mogavi, R. H.</b>, Braud, T., &amp; Hui, P. <i>ASONAM '23</i>, 320–324.</p>
+          </div></li>
+          <li class="pub"><span class="y">2023</span><div>
+            <p class="t"><a href="https://doi.org/10.1145/3573051.3596185">Envisioning an inclusive metaverse: Student perspectives on accessible and empowering metaverse-enabled learning</a></p>
+            <p class="m"><b>Mogavi, R. H.</b>, Hoffman, J., Deng, C., Du, Y., Haq, E.-U., &amp; Hui, P. <i>Learning @ Scale '23</i>, 346–353.</p>
+          </div></li>
+          <li class="pub"><span class="y">2023</span><div>
+            <p class="t"><a href="https://doi.org/10.1007/978-3-031-35979-8_17">Your favorite gameplay speaks volumes about you: Predicting user behavior and hexad type</a></p>
+            <p class="m"><b>Mogavi, R. H.</b>, Deng, C., Hoffman, J., Haq, E.-U., Gujar, S., Bucchiarone, A., &amp; Hui, P. <i>HCI in Games 2023</i>, 210–228. <span class="prize">Best Paper Award.</span></p>
+          </div></li>
+          <li class="pub"><span class="y">2023</span><div>
+            <p class="t"><a href="https://doi.org/10.1145/3543507.3587432">Tangible web: An interactive immersion virtual reality creativity system that travels across reality</a></p>
+            <p class="m">Yang, S., Gao, Z., <b>Mogavi, R. H.</b>, Hui, P., &amp; Braud, T. <i>The Web Conference (WWW '23)</i>, 3915–3922.</p>
+          </div></li>
+          <li class="pub"><span class="y">2023</span><div>
+            <p class="t"><a href="https://doi.org/10.1109/ASONAM55673.2022.10068611">Exploring mental health communications among Instagram coaches</a></p>
+            <p class="m">Haq, E.-U., Lee, L.-H., Tyson, G., <b>Mogavi, R. H.</b>, Braud, T., &amp; Hui, P. <i>ASONAM '22</i>, 218–225.</p>
+          </div></li>
+          <li class="pub"><span class="y">2022</span><div>
+            <p class="t"><a href="https://doi.org/10.1145/3543434.3543642">Tips, tidings, and tech: Governmental communication on Facebook during the COVID-19 pandemic</a></p>
+            <p class="m">Haq, E.-U., Braud, T., Lee, L.-H., <b>Mogavi, R. H.</b>, Zhang, H., &amp; Hui, P. <i>Digital Government Research (dg.o '22)</i>, 105–117.</p>
+          </div></li>
+          <li class="pub"><span class="y">2022</span><div>
+            <p class="t"><a href="https://doi.org/10.1145/3491140.3528274">When gamification spoils your learning: A qualitative case study of gamification misuse in a language-learning app</a></p>
+            <p class="m"><b>Mogavi, R. H.</b>, Guo, B., Zhang, Y., Haq, E.-U., Hui, P., &amp; Ma, X. <i>Learning @ Scale '22</i>, 175–188. <span class="prize">Best Paper Honorable Mention.</span></p>
+          </div></li>
+          <li class="pub"><span class="y">2021</span><div>
+            <p class="t"><a href="https://doi.org/10.1145/3430895.3460126">Student barriers to active learning in synchronous online classes: Characterization, reflections, and suggestions</a></p>
+            <p class="m"><b>Mogavi, R. H.</b>, Zhao, Y., Haq, E.-U., Hui, P., &amp; Ma, X. <i>Learning @ Scale '21</i>, 101–115.</p>
+          </div></li>
+          <li class="pub"><span class="y">2020</span><div>
+            <p class="t"><a href="https://doi.org/10.1145/3341161.3342881">Effects of ego networks and communities on self-disclosure in an online social network</a></p>
+            <p class="m">Kwon, Y. D., <b>Mogavi, R. H.</b>, Haq, E.-U., Kwon, Y., Ma, X., &amp; Hui, P. <i>ASONAM '19</i>, 17–24.</p>
+          </div></li>
+          <li class="pub"><span class="y">2019</span><div>
+            <p class="t"><a href="https://doi.org/10.1007/978-3-030-29908-8_29">HRCR: Hidden Markov-based reinforcement to reduce churn in question answering forums</a></p>
+            <p class="m"><b>Mogavi, R. H.</b>, Gujar, S., Ma, X., &amp; Hui, P. <i>PRICAI 2019</i>, 364–376.</p>
+          </div></li>
+        </ol>
+
+        <h3>Chapters, workshop papers, and preprints</h3>
+        <ol class="pubs">
+          <li class="pub"><span class="y">2024</span><div>
+            <p class="t"><a href="https://doi.org/10.1007/978-981-97-1298-4_7">Meta-in or meta-out of students with special needs: A systematic review on the use of metaverse in special education</a></p>
+            <p class="m">Altinay, F., Tlili, A., Altinay, Z., Dagli, G., Adedoyin, O. B., Huang, R., Xu, L., Jemni, M., <b>Mogavi, R. H.</b>, &amp; Metwally, A. H. S. In <i>Application of the Metaverse in Education</i>, 111–128. Springer.</p>
+          </div></li>
+          <li class="pub"><span class="y">2024</span><div>
+            <p class="t"><a href="https://arxiv.org/abs/2404.16071">Augmenting the author: Exploring the potential of AI collaboration in academic writing</a></p>
+            <p class="m">Tu, J., Hadan, H., Wang, D. M., Sgandurra, S. A., <b>Mogavi, R. H.</b>, &amp; Nacke, L. E. <i>CHI '24 workshop on Generative AI and HCI (GenAICHI)</i>.</p>
+          </div></li>
+          <li class="pub"><span class="y">2024</span><div>
+            <p class="t"><a href="https://arxiv.org/abs/2403.14665">Sora OpenAI's prelude: Social media perspectives on Sora OpenAI and the future of AI video generation</a></p>
+            <p class="m"><b>Mogavi, R. H.</b>, Wang, D., Tu, J., Hadan, H., Sgandurra, S. A., Hui, P., &amp; Nacke, L. E. <i>CHI '24 workshop on HCI and Human Factors Joining Forces to Meet the AI Interaction Challenge</i>.</p>
+          </div></li>
+          <li class="pub"><span class="y">2023</span><div>
+            <p class="t"><a href="https://arxiv.org/abs/2301.06316">A Twitter dataset for Pakistani political discourse</a></p>
+            <p class="m">Haq, E.-U., Zia, H. B., <b>Mogavi, R. H.</b>, Tyson, G., Lu, Y. K., Braud, T., &amp; Hui, P. arXiv preprint.</p>
+          </div></li>
+          <li class="pub"><span class="y">2023</span><div>
+            <p class="t"><a href="https://doi.org/10.14711/thesis-991013160255303412">Exploring user engagement and incentives in inquiry-based active learning and knowledge-sharing platforms</a></p>
+            <p class="m"><b>Mogavi, R. H.</b> Ph.D. thesis, Hong Kong University of Science and Technology.</p>
+          </div></li>
+        </ol>
+
+      </div>
+    </section>
+
+    <section class="section" id="teaching">
+      <h2>Teaching</h2>
+      <div class="text">
+        <p class="bio-lead">I think of teaching as a way of taking students seriously.</p>
+        <p>Most of what a course transmits is not its content, which students can find on their own, but a way of thinking: how to notice a question, how to stay with it before answering, and how to tell a sound argument from a fluent one. My part is to make that kind of thinking visible, and then to step back far enough that students can practise it themselves, make their own mistakes, and find that they can recover from them. A course has gone well when students leave more curious than they arrived, and more confident that their curiosity is worth following.</p>
+        <p>Mentoring asks for the same stance with more patience: listening before advising, and treating a student's question as a real question rather than a gap to be filled. The courses below are a record of where I have tried to work this way.</p>
+
+        <h3>University of Waterloo</h3>
+        <ul class="list">
+          <li><span class="k">GBDA 410</span><p class="v">Seminar in User Experience Research</p></li>
+          <li><span class="k">DEI 626</span><p class="v">User Experience Fundamentals and User Research</p></li>
+        </ul>
+
+        <h3>Hong Kong University of Science and Technology</h3>
+        <ul class="list">
+          <li><span class="k">EMIA 6500F</span><p class="v">Social Media for Creatives <span>(Clear Water Bay)</span></p></li>
+          <li><span class="k">CMAA 5022</span><p class="v">Social Media for Creatives <span>(Guangzhou)</span></p></li>
+          <li><span class="k">COMP 4641</span><p class="v">Social Information Network Analysis and Engineering</p></li>
+          <li><span class="k">COMP 4611</span><p class="v">Design and Analysis of Computer Architectures <span>(Best TA Award)</span></p></li>
+          <li><span class="k">COMP 2611</span><p class="v">Computer Organization <span>(Professor Samuel Chanson Award)</span></p></li>
+          <li><span class="k">COMP 2012</span><p class="v">Object-Oriented Programming and Data Structures</p></li>
+        </ul>
+
+        <h3>Sharif University of Technology</h3>
+        <ul class="list">
+          <li><span class="k">CE 40646</span><p class="v">Software Architecture</p></li>
+          <li><span class="k">CE 40181</span><p class="v">Engineering Probability and Statistics</p></li>
+          <li><span class="k">CE 40342</span><p class="v">Multimedia Systems</p></li>
+        </ul>
+
+        <h3>The AI Masterclass Series</h3>
+        <ul class="list">
+          <li><span class="k">Masterclass</span><p class="v">The AI-Powered UX Designer</p></li>
+          <li><span class="k">Masterclass</span><p class="v">Build Bulletproof User Trust with Responsible AI</p></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section" id="service">
+      <h2>Service</h2>
+      <div class="text">
+        <h3>Organizing and program committees</h3>
+        <ul class="list">
+          <li><span class="k">2024–2027</span><p class="v">ACM CHI <span>(Conference on Human Factors in Computing Systems)</span></p></li>
+          <li><span class="k">2024–2026</span><p class="v">ACM CSCW <span>(Computer-Supported Cooperative Work and Social Computing)</span></p></li>
+          <li><span class="k">2024–2026</span><p class="v">ACM Learning @ Scale</p></li>
+          <li><span class="k">2024–2026</span><p class="v">HCI International</p></li>
+          <li><span class="k">2020–2024</span><p class="v">ACM CHI, Late-Breaking Work</p></li>
+          <li><span class="k">2021–2023</span><p class="v">ACM CSCW, Posters</p></li>
+          <li><span class="k">2023</span><p class="v">ACM CHI PLAY, Work-in-Progress</p></li>
+          <li><span class="k">2020</span><p class="v">IEEE/ACM ASONAM <span>(Advances in Social Networks Analysis and Mining)</span></p></li>
+        </ul>
+
+        <h3>Other academic service</h3>
+        <ul class="list">
+          <li><span class="k">2026</span><p class="v">Distinguished Reviewer Board, ACM Transactions on Computer-Human Interaction</p></li>
+          <li><span class="k">2018, 2020, 2023</span><p class="v">JUPAS Interview Panel, HKUST</p></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section" id="recognition">
+      <h2>Recognition</h2>
+      <div class="text">
+        <h3>Fellowships and scholarships</h3>
+        <ul class="list">
+          <li><span class="k">2026–2028</span><p class="v">CIFAR AI Safety Postdoctoral Fellowship <span>(University of Toronto)</span></p></li>
+          <li><span class="k">2023–2025</span><p class="v">Lupina Fellowship <span>(University of Waterloo)</span></p></li>
+          <li><span class="k">2017–2023</span><p class="v">HKUST Ph.D. Scholarship</p></li>
+        </ul>
+
+        <h3>Awards</h3>
+        <ul class="list">
+          <li><span class="k">2024</span><p class="v">Best Paper Honorable Mention <span>(ACM CHI PLAY)</span></p></li>
+          <li><span class="k">2023</span><p class="v">Best Paper Award <span>(HCI International)</span></p></li>
+          <li><span class="k">2022</span><p class="v">Method Recognition Award <span>(ACM CSCW)</span></p></li>
+          <li><span class="k">2022</span><p class="v">Best Paper Honorable Mention <span>(ACM Learning @ Scale)</span></p></li>
+          <li><span class="k">2022</span><p class="v">Finalist, 3MT Thesis Competition <span>(HKUST)</span></p></li>
+          <li><span class="k">2018</span><p class="v">Professor Samuel Chanson Award <span>(HKUST)</span></p></li>
+          <li><span class="k">2014</span><p class="v">National Exemplary Student Award <span>(Ministry of Science and Technology, Iran)</span></p></li>
+          <li><span class="k">2012</span><p class="v">Best Programmer Award <span>(Tak Neda Software Engineering Ltd.)</span></p></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section" id="contact">
+      <h2>Contact</h2>
+      <div class="text">
+        <ul class="contact">
+          <li><a href="mailto:reza.mogavi@utoronto.ca"><svg viewBox="0 0 24 24" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="M3.5 6.5 12 13l8.5-6.5"/></svg>reza.mogavi@utoronto.ca</a></li>
+          <li><a href="https://scholar.google.com/citations?user=_CzMFZ0AAAAJ&amp;hl=en"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M2.5 9.5 12 5l9.5 4.5L12 14z"/><path d="M6.5 11.5v4.2c0 1.6 2.5 3 5.5 3s5.5-1.4 5.5-3v-4.2"/><path d="M21.5 9.5v5"/></svg>Google Scholar</a></li>
+          <li><a href="https://www.linkedin.com/in/reza-hadi-mogavi/"><svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="8.5" r="3.5"/><path d="M5 20c0-3.6 3.1-6 7-6s7 2.4 7 6"/></svg>LinkedIn</a></li>
+        </ul>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="colophon">
+    <span>Reza H. Mogavi, Toronto</span>
+    <span>Last updated September 2026</span>
+  </footer>
+
+</div>
+
+<button class="totop" id="totop" type="button" aria-label="Back to top">
+  <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 19V5"/><path d="M6 11l6-6 6 6"/></svg>
+</button>
+
+<script>
+  (function () {
+    var btn = document.getElementById('totop');
+    var threshold = function () { return window.innerHeight * 0.8; };
+    function update() { btn.classList.toggle('show', window.scrollY > threshold()); }
+    window.addEventListener('scroll', update, { passive: true });
+    window.addEventListener('resize', update);
+    update();
+    btn.addEventListener('click', function () {
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+      var name = document.querySelector('.masthead .name');
+      if (name) name.focus({ preventScroll: true });
+    });
+  })();
+  (function () {
+    var root = document.documentElement;
+    var btn = document.getElementById('theme-toggle');
+    function render() {
+      var light = root.classList.contains('light');
+      document.getElementById('theme-label').textContent = light ? 'Dark' : 'Light';
+      btn.setAttribute('aria-pressed', light ? 'true' : 'false');
+      btn.setAttribute('aria-label', light ? 'Switch to dark background' : 'Switch to light background');
+    }
+    btn.addEventListener('click', function () {
+      root.classList.toggle('light');
+      try { localStorage.setItem('theme', root.classList.contains('light') ? 'light' : 'dark'); } catch (e) {}
+      render();
+    });
+    render();
+  })();
+  (function () {
+    var words = document.querySelectorAll('.chiasmus [data-w]');
+    function set(key, on) {
+      words.forEach(function (w) { if (w.dataset.w === key) w.classList.toggle('lit', on); });
+    }
+    words.forEach(function (w) {
+      w.addEventListener('mouseenter', function () { set(w.dataset.w, true); });
+      w.addEventListener('mouseleave', function () { set(w.dataset.w, false); });
+    });
+  })();
+</script>
+
+</body>
+</html>
